@@ -10,10 +10,35 @@ async function loadPokemon(){
 }
 
 function renderPokemonInfo(){
-    let name = currentPokemon['name'];
-    let img = currentPokemon['sprites']['front_default'];
-    console.log(img);
-    document.getElementById('pokemonName').innerHTML = name;
-    document.getElementById('pokemonImg').src = img;
     
+    renderName();
+    renderImg();   
+    renderType();
+    renderId();
+}
+
+function renderName(){
+    let name = currentPokemon['name'];
+    document.getElementById('pokemonName').innerHTML = name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+function renderImg(){
+    let img = currentPokemon['sprites']['front_default'];
+    document.getElementById('pokemonImg').src = img;
+}
+
+function renderType(){
+    document.getElementById('types').innerHTML =``;
+    let types = currentPokemon['types'];
+    let type;
+    types.forEach(position => {
+        type = position['type']['name'];
+        document.getElementById('types').innerHTML += `<div class="type">${type.charAt(0).toUpperCase() + type.slice(1)}</div>`;
+    });
+}
+
+function renderId(){
+    let id = currentPokemon['id'];
+    id = ('000' + id).substr(-3);
+    document.getElementById('id').innerHTML = `#${id}`;
 }
