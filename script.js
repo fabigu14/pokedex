@@ -15,6 +15,7 @@ function renderPokemonInfo(){
     renderImg();   
     renderType();
     renderId();
+    renderAbout();
 }
 
 function renderName(){
@@ -41,4 +42,20 @@ function renderId(){
     let id = currentPokemon['id'];
     id = ('000' + id).substr(-3);
     document.getElementById('id').innerHTML = `#${id}`;
+}
+
+async function renderAbout(){
+    let species = await getSpeciesData(currentPokemon['id']);
+    document.getElementById('species').innerHTML = species['genera']['7']['genus'];
+    document.getElementById('height').innerHTML = currentPokemon['height'];
+    document.getElementById('weight').innerHTML = currentPokemon['weight'];
+    document.getElementById('abilities').innerHTML = currentPokemon;
+
+}
+
+async function getSpeciesData(id){
+    let urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
+    let responseSpecies = await fetch(urlSpecies);
+    let speciesAsJson = await responseSpecies.json();
+    return speciesAsJson;
 }
