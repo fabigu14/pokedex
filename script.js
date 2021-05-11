@@ -49,8 +49,7 @@ async function renderAbout(){
     document.getElementById('species').innerHTML = species['genera']['7']['genus'];
     document.getElementById('height').innerHTML = currentPokemon['height'];
     document.getElementById('weight').innerHTML = currentPokemon['weight'];
-    document.getElementById('abilities').innerHTML = currentPokemon;
-
+    renderAbilities();
 }
 
 async function getSpeciesData(id){
@@ -60,4 +59,11 @@ async function getSpeciesData(id){
     return speciesAsJson;
 }
 
-//test comment for git
+function renderAbilities(){
+    currentPokemon['abilities'].forEach(position => {
+        document.getElementById('abilities').innerHTML += `<span>${position['ability']['name']}</span>`;
+        if(currentPokemon['abilities'].indexOf(position) + 1 != currentPokemon['abilities'].length){
+            document.getElementById('abilities').innerHTML += `, `;
+        }
+    });
+}
