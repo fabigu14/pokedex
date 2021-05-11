@@ -59,3 +59,5 @@ async function getSpeciesData(id){
     let speciesAsJson = await responseSpecies.json();
     return speciesAsJson;
 }
+
+//test comment for git
