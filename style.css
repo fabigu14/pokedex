@@ -24,7 +24,7 @@ body{
 .type{
     padding: 5px 15px;
     width: fit-content;
-    background-color: #ff9999;
+    background-color: #ffffff4a;
     border-radius: 100px;
     margin-right: 10px;
 }
@@ -69,10 +69,10 @@ body{
 }
 
 #pokemonImg{
-    width: 400px;
-    height: 400px;
-    object-fit: cover;
-    margin-top: -270px;
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    margin-top: -178px;
 }
 
 .basic-info{
@@ -85,4 +85,9 @@ body{
 #id{
     margin-top: -30px;
     font-size: 1.2em;
+    font-weight: bold;
+}
+
+.opacity{
+    opacity: 0.5;
 }
