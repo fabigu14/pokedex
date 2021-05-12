@@ -10,7 +10,6 @@ body{
 #pokemon{
     height: 400px;
     width: 450px;
-    background-color: #fb6c6c;
     display: flex;
     flex-direction: column;
     border-top-left-radius: 40px;
@@ -60,8 +59,25 @@ body{
     width: calc(100% - 60px);
 }
 
+.info-nav{
+    display: flex;
+    justify-content: space-between;
+}
+
+.slide-bar{
+    margin-top: 15px;
+    height: .25rem;
+    width: 100%; 
+    background-color: aliceblue;
+}
+.underline{
+    height: .25rem;
+    background-color: rgb(202, 29, 29);
+    transition: 225ms ease-in-out;
+}
+
 .info-table{
-    margin-top: 30px;
+    margin-top: 45px;
 }
 
 .info-table td{

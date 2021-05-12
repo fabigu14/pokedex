@@ -29,12 +29,16 @@
     <div class="pokemon-info">
         <img id="pokemonImg" src="" alt="img of pokemon">
         <div class="info-overlay">
-            <nav>
-                <span>info</span>
-                <span>info</span>
-                <span>info</span>
-                <span>info</span>
+            <nav class="info-nav">
+                <span onclick="changeInfo()">About</span>
+                <span onclick="changeInfo()">Base Stats</span>
+                <span onclick="changeInfo()">Evolution</span>
+                <span onclick="changeInfo()">Moves</span>
             </nav>
+            <div class="slide-bar">
+                <div class="underline" style="margin-left: 0%; width: 50px;"></div>
+            </div>            
+
             <table class="info-table">
                 <tr>
                     <td class="opacity">Species</td>
