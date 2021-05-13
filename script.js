@@ -92,7 +92,7 @@ let pokemonTypes = [
 ];
 
 async function loadPokemon(){
-    let url = 'https://pokeapi.co/api/v2/pokemon/10';
+    let url = 'https://pokeapi.co/api/v2/pokemon/27';
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);
@@ -165,6 +165,45 @@ function renderAbilities(){
         document.getElementById('abilities').innerHTML += `<span>${position['ability']['name']}</span>`;
         if(currentPokemon['abilities'].indexOf(position) + 1 != currentPokemon['abilities'].length){
             document.getElementById('abilities').innerHTML += `, `;
+        }
+    });
+}
+
+function changeInfo(){
+    slideBar();
+}
+
+function slideBar(position){
+
+    if(position === 1){
+        document.getElementById('slideBar').style.marginLeft = '0';
+        document.getElementById('slideBar').style.width = '45px';
+    }
+    if(position === 2){
+        document.getElementById('slideBar').style.marginLeft = '24%';
+        document.getElementById('slideBar').style.width = '79px';
+    }
+    if(position === 3){
+        document.getElementById('slideBar').style.marginLeft = '57%';
+        document.getElementById('slideBar').style.width = '69px';
+    }
+    if(position === 4){
+        document.getElementById('slideBar').style.marginLeft = '86%';
+        document.getElementById('slideBar').style.width = '56px';
+    }
+    changeOpacity(position);
+}
+
+function changeOpacity(position){
+    let ids = ['1', '2', '3', '4'];
+    ids.forEach(id => {
+        if(id == position){
+            document.getElementById(id).classList.remove('opacity');
+            document.getElementById(id).classList.add('bold');
+        }
+        if(id != position){
+            document.getElementById(id).classList.add('opacity');
+            document.getElementById(id).classList.remove('bold');
         }
     });
 }
