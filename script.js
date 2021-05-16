@@ -102,11 +102,9 @@ async function loadPokemon(){
 
 function renderPokemonInfo(){
     
-    renderName();
-    renderImg();   
-    renderType();
-    renderId();
+    renderBasicInfo();
     renderAbout();
+    renderBaseStats();
 }
 
 function setBgColor(){
@@ -116,6 +114,13 @@ function setBgColor(){
             document.getElementById('pokemon').style.backgroundColor = info['color'];
         }
     });
+}
+
+function renderBasicInfo(){
+    renderName();
+    renderImg();   
+    renderType();
+    renderId();
 }
 
 function renderName(){
@@ -167,6 +172,10 @@ function renderAbilities(){
             document.getElementById('abilities').innerHTML += `, `;
         }
     });
+}
+
+function renderBaseStats(){
+    
 }
 
 function changeInfo(){
