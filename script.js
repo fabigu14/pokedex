@@ -97,7 +97,9 @@ async function loadPokemon(){
     currentPokemon = await response.json();
     console.log(currentPokemon);
     let currentSpecies = await (await fetch(currentPokemon['species']['url'])).json();
+    let currentEvolutions = await (await fetch(currentSpecies['evolution_chain']['url'])).json();
     console.log(currentSpecies);
+    console.log(currentEvolutions);
     setBgColor();
     renderPokemonInfo();
 }
