@@ -92,7 +92,7 @@ let pokemonTypes = [
 ];
 
 async function loadPokemon(){
-    let url = 'https://pokeapi.co/api/v2/pokemon/27';
+    let url = 'https://pokeapi.co/api/v2/pokemon/2';
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);
@@ -175,7 +175,22 @@ function renderAbilities(){
 }
 
 function renderBaseStats(){
-    
+    currentPokemon['stats'].forEach(position => {
+        document.getElementById(position['stat']['name']).innerHTML = `${position['base_stat']}`;
+        renderGraphs(position['stat']['name'], position['base_stat']);
+    });
+}
+
+function renderGraphs(name, value){
+    let element = document.getElementById(`${name}-graph`);
+    if(value < 50){
+        element.style.width = `${value}%`;
+        element.style.backgroundColor = '#fa5e52';
+    }
+    else{
+        element.style.width = `${value}%`;
+        element.style.backgroundColor = '#50cb50';
+    }
 }
 
 function changeInfo(){

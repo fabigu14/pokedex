@@ -113,7 +113,12 @@ body{
 }
 
 .graph{
-    padding: 0 40px 15px 0 !important;
+    padding: 0 0 15px 0 !important;
+}
+
+.graph-div{
+    width: 250px;
+    background-color: #f5f5f5;
 }
 
 .basic-info{
