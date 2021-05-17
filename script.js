@@ -92,10 +92,12 @@ let pokemonTypes = [
 ];
 
 async function loadPokemon(){
-    let url = 'https://pokeapi.co/api/v2/pokemon/2';
+    let url = 'https://pokeapi.co/api/v2/pokemon/4';
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);
+    let currentSpecies = await (await fetch(currentPokemon['species']['url'])).json();
+    console.log(currentSpecies);
     setBgColor();
     renderPokemonInfo();
 }
@@ -193,8 +195,24 @@ function renderGraphs(name, value){
     }
 }
 
-function changeInfo(){
-    slideBar();
+function changeInfo(position){
+    slideBar(position);
+
+    let container = document.getElementById('infoContainer');
+    if(position === 1){
+        container.style.marginLeft = 0;
+    }
+
+    else if(position === 2){
+        container.style.marginLeft = '-420px';
+    }
+
+    // else if(position === 2){
+
+    // }
+    // else if(position === 2){
+
+    // }
 }
 
 function slideBar(position){

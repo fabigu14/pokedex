@@ -30,101 +30,104 @@
         <img id="pokemonImg" src="" alt="img of pokemon">
         <div class="info-overlay">
             <nav class="info-nav">
-                <span onclick="changeInfo(); slideBar(1)" id="1" class="bold">About</span>
-                <span onclick="changeInfo(); slideBar(2)" id="2" class="opacity">Base Stats</span>
-                <span onclick="changeInfo(); slideBar(3)" id="3" class="opacity">Evolution</span>
-                <span onclick="changeInfo(); slideBar(4)" id="4" class="opacity">Moves</span>
+                <span onclick="changeInfo(1)" id="1" class="bold">About</span>
+                <span onclick="changeInfo(2)" id="2" class="opacity">Base Stats</span>
+                <span onclick="changeInfo(3)" id="3" class="opacity">Evolution</span>
+                <span onclick="changeInfo(4)" id="4" class="opacity">Moves</span>
             </nav>
             <div class="slide-bar">
                 <div id="slideBar" class="underline" style="margin-left: 0%; width: 50px;"></div>
             </div>
 
-            <div class="info-container">
-                <table id="about" class="info-table" style="margin-left: -300px;">
-                    <tr>
-                        <td class="opacity">Species</td>
-                        <td id="species"></td>
-                    </tr>
-                    <tr>
-                        <td class="opacity">Height</td>
-                        <td id="height"></td>
-                    </tr>
-                    <tr>
-                        <td class="opacity">Weight</td>
-                        <td id="weight"></td>
-                    </tr>
-                    <tr>
-                        <td class="opacity">Abilities</td>
-                        <td id="abilities"></td>
-                    </tr>
-                </table>
-
-                <table id="stats" class="info-table" style="margin-left: 0px;">
-                    <tr>
-                        <td class="stat opacity">HP</td>
-                        <td id="hp" class="value"></td>
-                        <td class="graph">
-                            <div class="graph-div">
-                                <div id="hp-graph" style="height: 4px;">
-
+            <div id="infoContainer" class="info-container">
+                
+                    <table class="info-table" >
+                        <tr>
+                            <td class="opacity">Species</td>
+                            <td id="species"></td>
+                        </tr>
+                        <tr>
+                            <td class="opacity">Height</td>
+                            <td id="height"></td>
+                        </tr>
+                        <tr>
+                            <td class="opacity">Weight</td>
+                            <td id="weight"></td>
+                        </tr>
+                        <tr>
+                            <td class="opacity">Abilities</td>
+                            <td id="abilities"></td>
+                        </tr>
+                    </table>
+    
+                    <table class="info-table" style="margin-left: 0px;">
+                        <tr>
+                            <td class="stat opacity">HP</td>
+                            <td id="hp" class="value"></td>
+                            <td class="graph">
+                                <div class="graph-div">
+                                    <div id="hp-graph" style="height: 4px;">
+    
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="stat opacity">Attack</td>
-                        <td id="attack" class="value"></td>
-                        <td class="graph"><div class="graph-div">
-                            <div id="attack-graph" style="height: 4px;">
-
-                            </div>
-                        </div></td>
-                    </tr>
-                    <tr>
-                        <td class="stat opacity">Defense</td>
-                        <td id="defense" class="value"></td>
-                        <td class="graph">
-                            <div class="graph-div">
-                                <div id="defense-graph" style="height: 4px;">
-
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="stat opacity">Attack</td>
+                            <td id="attack" class="value"></td>
+                            <td class="graph"><div class="graph-div">
+                                <div id="attack-graph" style="height: 4px;">
+    
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="stat opacity">Sp. Atk</td>
-                        <td id="special-attack" class="value"></td>
-                        <td class="graph">
-                            <div class="graph-div">
-                                <div id="special-attack-graph" style="height: 4px;">
-
+                            </div></td>
+                        </tr>
+                        <tr>
+                            <td class="stat opacity">Defense</td>
+                            <td id="defense" class="value"></td>
+                            <td class="graph">
+                                <div class="graph-div">
+                                    <div id="defense-graph" style="height: 4px;">
+    
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="stat opacity">Sp. Def</td>
-                        <td id="special-defense" class="value"></td>
-                        <td class="graph">
-                            <div class="graph-div">
-                                <div id="special-defense-graph" style="height: 4px;">
-
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="stat opacity">Sp. Atk</td>
+                            <td id="special-attack" class="value"></td>
+                            <td class="graph">
+                                <div class="graph-div">
+                                    <div id="special-attack-graph" style="height: 4px;">
+    
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="stat opacity">Speed</td>
-                        <td id="speed" class="value"></td>
-                        <td class="graph">
-                            <div class="graph-div">
-                                <div id="speed-graph" style="height: 4px;">
-
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="stat opacity">Sp. Def</td>
+                            <td id="special-defense" class="value"></td>
+                            <td class="graph">
+                                <div class="graph-div">
+                                    <div id="special-defense-graph" style="height: 4px;">
+    
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="stat opacity">Speed</td>
+                            <td id="speed" class="value"></td>
+                            <td class="graph">
+                                <div class="graph-div">
+                                    <div id="speed-graph" style="height: 4px;">
+    
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                
+                
             </div>
 
         </div>
