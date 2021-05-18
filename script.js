@@ -94,7 +94,7 @@ let pokemonTypes = [
 ];
 
 async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/363';
+    let url = 'https://pokeapi.co/api/v2/pokemon/4';
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);
@@ -190,13 +190,18 @@ function renderBaseStats() {
 
 function renderGraphs(name, value) {
     let element = document.getElementById(`${name}-graph`);
-    if (value < 50) {
+    if (value >= 100){
+        
+        element.style.width = `100%`;
+        element.style.backgroundColor = '#50cb50';
+    }
+    else if (value > 50 && value < 100) {
         element.style.width = `${value}%`;
-        element.style.backgroundColor = '#fa5e52';
+        element.style.backgroundColor = '#50cb50';
     }
     else {
         element.style.width = `${value}%`;
-        element.style.backgroundColor = '#50cb50';
+        element.style.backgroundColor = '#fa5e52';
     }
 }
 
@@ -207,24 +212,62 @@ function renderEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
         const currentPkm = pokemon[i];
         let name = currentPkm['name'];
         let secondName = pokemon[1]['name'];
+        let firstName = pokemon[0]['name'];
         document.getElementById(`name${i}`).innerHTML = name.charAt(0).toUpperCase() + name.slice(1)
         document.getElementById(`pokemon${i}`).src = currentPkm['sprites']['other']['dream_world']['front_default'];
-        document.getElementById('secondName').innerHTML = secondName.charAt(0).toUpperCase() + secondName.slice(1);
-        document.getElementById(`secondPokemon`).src = pokemon[1]['sprites']['other']['dream_world']['front_default'];
+        if (checkEvolution()) {
+            document.getElementById('secondName').innerHTML = secondName.charAt(0).toUpperCase() + secondName.slice(1);
+            document.getElementById(`secondPokemon`).src = pokemon[1]['sprites']['other']['dream_world']['front_default'];
+        }
+        else {
+            document.getElementById('secondName').innerHTML = firstName.charAt(0).toUpperCase() + firstName.slice(1);
+            document.getElementById(`secondPokemon`).src = pokemon[0]['sprites']['other']['dream_world']['front_default'];
+        }
     }
-
     renderLvl()
 }
 
-function renderLvl(){
-    let evolutionLvl = getLvl();
+function showMessage(){
+    document.getElementById('evolutions').innerHTML = `Evolutions will be added soon`
 }
 
-function getLvl(){
+function checkEvolution() {
+    let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
+    let secondMinLvl;
+    try {
+        secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
+        return true;
+    }
+
+    catch (e) {
+        return false;
+    }
+}
+
+function renderLvl() {
+    let evolutionLvl = getLvl();
+    for (let i = 0; i < evolutionLvl.length; i++) {
+        const lvl = evolutionLvl[i];
+        if (Number.isInteger(lvl)) {
+            document.getElementById(`level${i}`).innerHTML = `Lvl ${lvl}`;
+        }
+        else {
+            document.getElementById(`level${i}`).innerHTML = lvl;
+        }
+    }
+}
+
+function getLvl() {
     let evolutionLvl = [];
     let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
-    let secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
-    
+    let secondMinLvl;
+    try {
+        secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
+    }
+
+    catch (e) {
+        secondMinLvl = currentEvolutions['chain']['evolves_to']['1']['evolution_details']['0']['item']['name'];
+    }
     evolutionLvl.push(firstMinLvl, secondMinLvl);
 
     return evolutionLvl;
@@ -237,26 +280,35 @@ async function fetchEvolutionData() {
     let firstPokemon = await (await fetch(firstUrl)).json();
     let secondUrl = `https://pokeapi.co/api/v2/pokemon/${names[1]}`;
     let secondPokemon = await (await fetch(secondUrl)).json();
-    let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
-    let thirdPokemon = await (await fetch(thirdUrl)).json();
-    renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
+    if (names.length > 2) {
+        let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
+        let thirdPokemon = await (await fetch(thirdUrl)).json();
+        renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
+    }
+    else{
+        showMessage();
+    }
 }
 
-function getNames(){
+function getNames() {
     let names = [];
     let firstName = currentEvolutions['chain']['species']['name'];
     let secondName = currentEvolutions['chain']['evolves_to']['0']['species']['name'];
     let thirdName;
-   
+
     try {
         thirdName = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
+        names.push(firstName, secondName, thirdName);
     }
-
     catch (e) {
-        thirdName = currentEvolutions['chain']['evolves_to']['1']['species']['name'];
+        try {
+            thirdName = currentEvolutions['chain']['evolves_to']['1']['species']['name'];
+            names.push(firstName, secondName, thirdName);
+        }
+        catch (e) {
+            names.push(firstName, secondName);
+        }
     }
-
-    names.push(firstName, secondName, thirdName);
 
     return names;
 }
@@ -275,12 +327,10 @@ function changeInfo(position) {
         container.style.marginLeft = '-420px';
     }
 
-    // else if(position === 2){
-
-    // }
-    // else if(position === 2){
-
-    // }
+    else if(position === 3){
+        container.style.marginLeft = '-840px';
+     }
+    
 }
 
 function slideBar(position) {
@@ -290,22 +340,18 @@ function slideBar(position) {
         document.getElementById('slideBar').style.width = '45px';
     }
     if (position === 2) {
-        document.getElementById('slideBar').style.marginLeft = '24%';
+        document.getElementById('slideBar').style.marginLeft = '37%';
         document.getElementById('slideBar').style.width = '79px';
     }
     if (position === 3) {
-        document.getElementById('slideBar').style.marginLeft = '57%';
-        document.getElementById('slideBar').style.width = '69px';
-    }
-    if (position === 4) {
-        document.getElementById('slideBar').style.marginLeft = '86%';
-        document.getElementById('slideBar').style.width = '56px';
+        document.getElementById('slideBar').style.marginLeft = '83%';
+        document.getElementById('slideBar').style.width = '66px';
     }
     changeOpacity(position);
 }
 
 function changeOpacity(position) {
-    let ids = ['1', '2', '3', '4'];
+    let ids = ['1', '2', '3'];
     ids.forEach(id => {
         if (id == position) {
             document.getElementById(id).classList.remove('opacity');

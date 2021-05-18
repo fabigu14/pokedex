@@ -33,13 +33,12 @@
                 <span onclick="changeInfo(1)" id="1" class="bold">About</span>
                 <span onclick="changeInfo(2)" id="2" class="opacity">Base Stats</span>
                 <span onclick="changeInfo(3)" id="3" class="opacity">Evolution</span>
-                <span onclick="changeInfo(4)" id="4" class="opacity">Moves</span>
             </nav>
             <div class="slide-bar">
                 <div id="slideBar" class="underline" style="margin-left: 0%; width: 50px;"></div>
             </div>
 
-            <div id="infoContainer" class="info-container" style="margin-left: -840px;">
+            <div id="infoContainer" class="info-container">
 
                 <table class="info-table">
                     <tr>
@@ -128,41 +127,42 @@
                         </td>
                     </tr>
                 </table>
-                <div class="evolutions">
+
+                <div id="evolutions" class="info-table">
 
                     <!-- first evolution -->
                     <div class="evolution">
-                        <div>
+                        <div class="evolution-pkm">
                             <h2 id="name0"></h2>
-                            <img id="pokemon0" src="" alt="img of currentPkm">
+                            <img class="pokemon-img" id="pokemon0" src="" alt="img of currentPkm">
                         </div>
 
-                        <div>
+                        <div class="evolution-pkm">
                             <span id="level0"></span>
-                            <img src="img/arrow.ico" alt="">
+                            <img class="arrow" src="img/arrow2.ico" alt="">
                         </div>
                         
-                        <div>
+                        <div class="evolution-pkm">
                             <h2 id="name1"></h2>
-                            <img id="pokemon1" src="" alt="img of currentPkm">
+                            <img class="pokemon-img" id="pokemon1" src="" alt="img of currentPkm">
                         </div>
                     </div>
 
                     <!-- second evolution -->
                     <div class="evolution">
-                        <div>
+                        <div class="evolution-pkm">
                             <h2 id="secondName"></h2>
-                            <img id="secondPokemon" src="" alt="img of currentPkm">
+                            <img class="pokemon-img" id="secondPokemon" src="" alt="img of currentPkm">
                         </div>
 
-                        <div>
+                        <div class="evolution-pkm">
                             <span id="level1"></span>
-                            <img src="img/arrow.ico" alt="">
+                            <img class="arrow" src="img/arrow2.ico" alt="">
                         </div>
                         
-                        <div>
+                        <div class="evolution-pkm">
                             <h2 id="name2"></h2>
-                            <img id="pokemon2" src="" alt="img of currentPkm">
+                            <img class="pokemon-img" id="pokemon2" src="" alt="img of currentPkm">
                         </div>
                     </div>
 
