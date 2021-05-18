@@ -146,3 +146,11 @@ body{
 .bold{
     font-weight: bold;
 }
+
+.evolutions img{
+    height: 70px;
+}
+
+.evolution{
+    display: flex;
+}

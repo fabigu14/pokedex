@@ -1,4 +1,6 @@
 let currentPokemon;
+let currentEvolutions;
+let currentSpecies;
 let pokemonTypes = [
     {
         "type": "bug",
@@ -91,55 +93,56 @@ let pokemonTypes = [
     }
 ];
 
-async function loadPokemon(){
-    let url = 'https://pokeapi.co/api/v2/pokemon/4';
+async function loadPokemon() {
+    let url = 'https://pokeapi.co/api/v2/pokemon/363';
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);
-    let currentSpecies = await (await fetch(currentPokemon['species']['url'])).json();
-    let currentEvolutions = await (await fetch(currentSpecies['evolution_chain']['url'])).json();
+    currentSpecies = await (await fetch(currentPokemon['species']['url'])).json();
+    currentEvolutions = await (await fetch(currentSpecies['evolution_chain']['url'])).json();
     console.log(currentSpecies);
     console.log(currentEvolutions);
     setBgColor();
     renderPokemonInfo();
 }
 
-function renderPokemonInfo(){
-    
+function renderPokemonInfo() {
+
     renderBasicInfo();
     renderAbout();
     renderBaseStats();
+    fetchEvolutionData();
 }
 
-function setBgColor(){
+function setBgColor() {
     let pokemonType = currentPokemon['types']['0']['type']['name']
     pokemonTypes.forEach(info => {
-        if(pokemonType === info['type']){
+        if (pokemonType === info['type']) {
             document.getElementById('pokemon').style.backgroundColor = info['color'];
         }
     });
 }
 
-function renderBasicInfo(){
+function renderBasicInfo() {
     renderName();
-    renderImg();   
+    renderImg();
     renderType();
     renderId();
 }
 
-function renderName(){
+function renderName() {
     let name = currentPokemon['name'];
     document.getElementById('pokemonName').innerHTML = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-function renderImg(){
-    
+function renderImg() {
+
     let img = currentPokemon['sprites']['other']['dream_world']['front_default'];
     document.getElementById('pokemonImg').src = img;
 }
 
-function renderType(){
-    document.getElementById('types').innerHTML =``;
+function renderType() {
+    document.getElementById('types').innerHTML = ``;
     let types = currentPokemon['types'];
     let type;
     types.forEach(position => {
@@ -148,13 +151,13 @@ function renderType(){
     });
 }
 
-function renderId(){
+function renderId() {
     let id = currentPokemon['id'];
     id = ('000' + id).substr(-3);
     document.getElementById('id').innerHTML = `#${id}`;
 }
 
-async function renderAbout(){
+async function renderAbout() {
     let species = await getSpeciesData(currentPokemon['id']);
     document.getElementById('species').innerHTML = species['genera']['7']['genus'];
     document.getElementById('height').innerHTML = `${currentPokemon['height'] / 10} m`;
@@ -162,50 +165,113 @@ async function renderAbout(){
     renderAbilities();
 }
 
-async function getSpeciesData(id){
+async function getSpeciesData(id) {
     let urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
     let responseSpecies = await fetch(urlSpecies);
     let speciesAsJson = await responseSpecies.json();
     return speciesAsJson;
 }
 
-function renderAbilities(){
+function renderAbilities() {
     currentPokemon['abilities'].forEach(position => {
         document.getElementById('abilities').innerHTML += `<span>${position['ability']['name']}</span>`;
-        if(currentPokemon['abilities'].indexOf(position) + 1 != currentPokemon['abilities'].length){
+        if (currentPokemon['abilities'].indexOf(position) + 1 != currentPokemon['abilities'].length) {
             document.getElementById('abilities').innerHTML += `, `;
         }
     });
 }
 
-function renderBaseStats(){
+function renderBaseStats() {
     currentPokemon['stats'].forEach(position => {
         document.getElementById(position['stat']['name']).innerHTML = `${position['base_stat']}`;
         renderGraphs(position['stat']['name'], position['base_stat']);
     });
 }
 
-function renderGraphs(name, value){
+function renderGraphs(name, value) {
     let element = document.getElementById(`${name}-graph`);
-    if(value < 50){
+    if (value < 50) {
         element.style.width = `${value}%`;
         element.style.backgroundColor = '#fa5e52';
     }
-    else{
+    else {
         element.style.width = `${value}%`;
         element.style.backgroundColor = '#50cb50';
     }
 }
 
-function changeInfo(position){
+function renderEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
+    let pokemon = [firstPokemon, secondPokemon, thirdPokemon];
+
+    for (let i = 0; i < pokemon.length; i++) {
+        const currentPkm = pokemon[i];
+        let name = currentPkm['name'];
+        let secondName = pokemon[1]['name'];
+        document.getElementById(`name${i}`).innerHTML = name.charAt(0).toUpperCase() + name.slice(1)
+        document.getElementById(`pokemon${i}`).src = currentPkm['sprites']['other']['dream_world']['front_default'];
+        document.getElementById('secondName').innerHTML = secondName.charAt(0).toUpperCase() + secondName.slice(1);
+        document.getElementById(`secondPokemon`).src = pokemon[1]['sprites']['other']['dream_world']['front_default'];
+    }
+
+    renderLvl()
+}
+
+function renderLvl(){
+    let evolutionLvl = getLvl();
+}
+
+function getLvl(){
+    let evolutionLvl = [];
+    let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
+    let secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
+    
+    evolutionLvl.push(firstMinLvl, secondMinLvl);
+
+    return evolutionLvl;
+}
+
+async function fetchEvolutionData() {
+    let pokemon = [];
+    let names = getNames();
+    let firstUrl = `https://pokeapi.co/api/v2/pokemon/${names[0]}`;
+    let firstPokemon = await (await fetch(firstUrl)).json();
+    let secondUrl = `https://pokeapi.co/api/v2/pokemon/${names[1]}`;
+    let secondPokemon = await (await fetch(secondUrl)).json();
+    let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
+    let thirdPokemon = await (await fetch(thirdUrl)).json();
+    renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
+}
+
+function getNames(){
+    let names = [];
+    let firstName = currentEvolutions['chain']['species']['name'];
+    let secondName = currentEvolutions['chain']['evolves_to']['0']['species']['name'];
+    let thirdName;
+   
+    try {
+        thirdName = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
+    }
+
+    catch (e) {
+        thirdName = currentEvolutions['chain']['evolves_to']['1']['species']['name'];
+    }
+
+    names.push(firstName, secondName, thirdName);
+
+    return names;
+}
+
+
+
+function changeInfo(position) {
     slideBar(position);
 
     let container = document.getElementById('infoContainer');
-    if(position === 1){
+    if (position === 1) {
         container.style.marginLeft = 0;
     }
 
-    else if(position === 2){
+    else if (position === 2) {
         container.style.marginLeft = '-420px';
     }
 
@@ -217,35 +283,35 @@ function changeInfo(position){
     // }
 }
 
-function slideBar(position){
+function slideBar(position) {
 
-    if(position === 1){
+    if (position === 1) {
         document.getElementById('slideBar').style.marginLeft = '0';
         document.getElementById('slideBar').style.width = '45px';
     }
-    if(position === 2){
+    if (position === 2) {
         document.getElementById('slideBar').style.marginLeft = '24%';
         document.getElementById('slideBar').style.width = '79px';
     }
-    if(position === 3){
+    if (position === 3) {
         document.getElementById('slideBar').style.marginLeft = '57%';
         document.getElementById('slideBar').style.width = '69px';
     }
-    if(position === 4){
+    if (position === 4) {
         document.getElementById('slideBar').style.marginLeft = '86%';
         document.getElementById('slideBar').style.width = '56px';
     }
     changeOpacity(position);
 }
 
-function changeOpacity(position){
+function changeOpacity(position) {
     let ids = ['1', '2', '3', '4'];
     ids.forEach(id => {
-        if(id == position){
+        if (id == position) {
             document.getElementById(id).classList.remove('opacity');
             document.getElementById(id).classList.add('bold');
         }
-        if(id != position){
+        if (id != position) {
             document.getElementById(id).classList.add('opacity');
             document.getElementById(id).classList.remove('bold');
         }
