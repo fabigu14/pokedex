@@ -94,7 +94,7 @@ let pokemonTypes = [
 ];
 
 async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/4';
+    let url = 'https://pokeapi.co/api/v2/pokemon/1';
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);

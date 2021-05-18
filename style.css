@@ -1,10 +1,14 @@
 body{
+    height: 100vh;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
+    /* background: url('img/pokeball.png') no-repeat top right/cover; */
+    background: #80808040;
+    
 }
 
 #pokemon{
@@ -48,10 +52,12 @@ body{
 .pokemon-info{
     display: flex;
     justify-content: center;
-    min-height: 200px;
+    min-height: 381px;
     width: 450px;
     border-top-left-radius:  40px;
     border-top-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
     margin-top: -50px;
     background-color: white;
     position: relative;
@@ -65,8 +71,6 @@ body{
     padding: 40px 30px 0;
     width: calc(100% - 60px);
     overflow: hidden;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
 }
 
 .info-nav{
