@@ -40,13 +40,22 @@ body{
 }
 
 .nav-bar{
-    height: 40px;
+    padding: 30px 0 10px 20px;
     width: 100%;
+}
+.nav-bar img{
+    opacity: 0.7;
+}
+
+.nav-bar img:hover{
+    transform: scale(1.1);
+    transition: 125ms transform ease-in-out;
 }
 
 #pokemonName{
     color: white;
     padding-left: 20px;
+    margin-top: 0;
 }
 
 .pokemon-info{
@@ -81,7 +90,7 @@ body{
 .info-nav span:hover{
     cursor: pointer;
     transform: scale(1.1);
-    transition: 225ms transform ease-in-out;
+    transition: 125ms transform ease-in-out;
 }
 
 .slide-bar{

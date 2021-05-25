@@ -93,8 +93,15 @@ let pokemonTypes = [
     }
 ];
 
-async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/1';
+function init() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    loadPokemon(id);
+}
+
+async function loadPokemon(id) {
+    let url = 'https://pokeapi.co/api/v2/pokemon/256';
+    console.log(url);
     let response = await fetch(url);
     currentPokemon = await response.json();
     console.log(currentPokemon);
@@ -112,6 +119,14 @@ function renderPokemonInfo() {
     renderAbout();
     renderBaseStats();
     fetchEvolutionData();
+    loadArrow();
+}
+
+function loadArrow() {
+    document.getElementById('navBar').innerHTML = `
+            <a href="http://fabian-gurth.developerakademie.com/pokedex/pokedex.html#${currentPokemon['id']}">
+                <img src="img/arrow-left.ico" alt="arrow-left">
+            </a>`
 }
 
 function setBgColor() {
@@ -190,8 +205,8 @@ function renderBaseStats() {
 
 function renderGraphs(name, value) {
     let element = document.getElementById(`${name}-graph`);
-    if (value >= 100){
-        
+    if (value >= 100) {
+
         element.style.width = `100%`;
         element.style.backgroundColor = '#50cb50';
     }
@@ -227,7 +242,7 @@ function renderEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
     renderLvl()
 }
 
-function showMessage(){
+function showMessage() {
     document.getElementById('evolutions').innerHTML = `Evolutions will be added soon`
 }
 
@@ -285,7 +300,7 @@ async function fetchEvolutionData() {
         let thirdPokemon = await (await fetch(thirdUrl)).json();
         renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
     }
-    else{
+    else {
         showMessage();
     }
 }
@@ -327,10 +342,10 @@ function changeInfo(position) {
         container.style.marginLeft = '-420px';
     }
 
-    else if(position === 3){
+    else if (position === 3) {
         container.style.marginLeft = '-840px';
-     }
-    
+    }
+
 }
 
 function slideBar(position) {
