@@ -100,7 +100,7 @@ function init() {
 }
 
 async function loadPokemon(id) {
-    let url = 'https://pokeapi.co/api/v2/pokemon/256';
+    let url = 'https://pokeapi.co/api/v2/pokemon/'+ id;
     console.log(url);
     let response = await fetch(url);
     currentPokemon = await response.json();
