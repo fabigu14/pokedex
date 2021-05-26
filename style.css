@@ -111,9 +111,9 @@ body{
 }
 
 .info-table{
-    /* position: absolute; */
     margin-top: 30px;
     width: 420px;
+    margin-right: 10px;
 }
 
 .scroll-div{

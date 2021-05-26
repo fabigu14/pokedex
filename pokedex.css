@@ -1,9 +1,16 @@
 body {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     font-family: 'Roboto', sans-serif;
     color: white;
     margin: 0;
+    background: #80808040;
+}
+
+h1{
+    color: #0367bf;
 }
 
 #pokeContent {

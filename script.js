@@ -93,26 +93,32 @@ let pokemonTypes = [
     }
 ];
 
+/**
+ * gets urlParam of frompokedex.html & calls loadPokemon()
+ */
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
     loadPokemon(id);
 }
 
+/**
+ * gets & fetches api url, sets currentPokemon, calls render function
+ */
 async function loadPokemon(id) {
     let url = 'https://pokeapi.co/api/v2/pokemon/'+ id;
     console.log(url);
     let response = await fetch(url);
     currentPokemon = await response.json();
-    console.log(currentPokemon);
     currentSpecies = await (await fetch(currentPokemon['species']['url'])).json();
     currentEvolutions = await (await fetch(currentSpecies['evolution_chain']['url'])).json();
-    console.log(currentSpecies);
-    console.log(currentEvolutions);
     setBgColor();
     renderPokemonInfo();
 }
 
+/**
+ * calls diffrent render functions
+ */
 function renderPokemonInfo() {
 
     renderBasicInfo();
@@ -122,13 +128,19 @@ function renderPokemonInfo() {
     loadArrow();
 }
 
+/**
+ * loads img of arrow-left, to top left corner
+ */
 function loadArrow() {
     document.getElementById('navBar').innerHTML = `
-            <a href="http://fabian-gurth.developerakademie.com/pokedex/pokedex.html#${currentPokemon['id']}">
+            <a href="http://fabian-gurth.developerakademie.com/pokedex/pokedex.html#id${currentPokemon['id']}">
                 <img src="img/arrow-left.ico" alt="arrow-left">
             </a>`
 }
 
+/**
+ * sets BG-Color of pokemon div
+ */
 function setBgColor() {
     let pokemonType = currentPokemon['types']['0']['type']['name']
     pokemonTypes.forEach(info => {
@@ -138,6 +150,9 @@ function setBgColor() {
     });
 }
 
+/**
+ * calls the renderfunctions for basic info
+ */
 function renderBasicInfo() {
     renderName();
     renderImg();
@@ -145,17 +160,26 @@ function renderBasicInfo() {
     renderId();
 }
 
+/**
+ * renders name of pokemon
+ */
 function renderName() {
     let name = currentPokemon['name'];
     document.getElementById('pokemonName').innerHTML = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+/**
+ * renders img of pokemon
+ */
 function renderImg() {
 
     let img = currentPokemon['sprites']['other']['dream_world']['front_default'];
     document.getElementById('pokemonImg').src = img;
 }
 
+/**
+ * renders type ofthe pokemon
+ */
 function renderType() {
     document.getElementById('types').innerHTML = ``;
     let types = currentPokemon['types'];
@@ -166,12 +190,18 @@ function renderType() {
     });
 }
 
+/**
+ * renders id of pokemon
+ */
 function renderId() {
     let id = currentPokemon['id'];
     id = ('000' + id).substr(-3);
     document.getElementById('id').innerHTML = `#${id}`;
 }
 
+/**
+ * gets current species & renders info about pokemon
+ */
 async function renderAbout() {
     let species = await getSpeciesData(currentPokemon['id']);
     document.getElementById('species').innerHTML = species['genera']['7']['genus'];
@@ -180,6 +210,9 @@ async function renderAbout() {
     renderAbilities();
 }
 
+/**
+ * gets & fetches api url of currentSpecies, returns currentspecies as Json
+ */
 async function getSpeciesData(id) {
     let urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
     let responseSpecies = await fetch(urlSpecies);
@@ -187,6 +220,9 @@ async function getSpeciesData(id) {
     return speciesAsJson;
 }
 
+/**
+ * renders abilities of pokemon
+ */
 function renderAbilities() {
     currentPokemon['abilities'].forEach(position => {
         document.getElementById('abilities').innerHTML += `<span>${position['ability']['name']}</span>`;
@@ -196,6 +232,9 @@ function renderAbilities() {
     });
 }
 
+/**
+ * renders base stats of pokemon, calls function which draws graphs
+ */
 function renderBaseStats() {
     currentPokemon['stats'].forEach(position => {
         document.getElementById(position['stat']['name']).innerHTML = `${position['base_stat']}`;
@@ -203,6 +242,9 @@ function renderBaseStats() {
     });
 }
 
+/**
+ * calculates and draws graphs, sets color depending on value
+ */
 function renderGraphs(name, value) {
     let element = document.getElementById(`${name}-graph`);
     if (value >= 100) {
@@ -220,6 +262,55 @@ function renderGraphs(name, value) {
     }
 }
 
+/**
+ * gets data for evolutions, calls render function or displays message
+ */
+async function fetchEvolutionData() {
+    let pokemon = [];
+    let names = getNames();
+    let firstUrl = `https://pokeapi.co/api/v2/pokemon/${names[0]}`;
+    let firstPokemon = await (await fetch(firstUrl)).json();
+    let secondUrl = `https://pokeapi.co/api/v2/pokemon/${names[1]}`;
+    let secondPokemon = await (await fetch(secondUrl)).json();
+    if (names.length > 2) {
+        let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
+        let thirdPokemon = await (await fetch(thirdUrl)).json();
+        renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
+    }
+    else {
+        showMessage();
+    }
+}
+
+/**
+ * gets names of pokemons in evolution-chain
+ */
+function getNames() {
+    let names = [];
+    let firstName = currentEvolutions['chain']['species']['name'];
+    let secondName = currentEvolutions['chain']['evolves_to']['0']['species']['name'];
+    let thirdName;
+
+    try {
+        thirdName = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
+        names.push(firstName, secondName, thirdName);
+    }
+    catch (e) {
+        try {
+            thirdName = currentEvolutions['chain']['evolves_to']['1']['species']['name'];
+            names.push(firstName, secondName, thirdName);
+        }
+        catch (e) {
+            names.push(firstName, secondName);
+        }
+    }
+
+    return names;
+}
+
+/**
+ * renders evolutions
+ */
 function renderEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
     let pokemon = [firstPokemon, secondPokemon, thirdPokemon];
 
@@ -246,6 +337,9 @@ function showMessage() {
     document.getElementById('evolutions').innerHTML = `Evolutions will be added soon`
 }
 
+/**
+ * checks for next evolution
+ */
 function checkEvolution() {
     let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
     let secondMinLvl;
@@ -259,6 +353,9 @@ function checkEvolution() {
     }
 }
 
+/**
+ * renders min level for evolution
+ */
 function renderLvl() {
     let evolutionLvl = getLvl();
     for (let i = 0; i < evolutionLvl.length; i++) {
@@ -272,6 +369,9 @@ function renderLvl() {
     }
 }
 
+/**
+ * gets & returns min levels for evolution to happen
+ */
 function getLvl() {
     let evolutionLvl = [];
     let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
@@ -288,48 +388,9 @@ function getLvl() {
     return evolutionLvl;
 }
 
-async function fetchEvolutionData() {
-    let pokemon = [];
-    let names = getNames();
-    let firstUrl = `https://pokeapi.co/api/v2/pokemon/${names[0]}`;
-    let firstPokemon = await (await fetch(firstUrl)).json();
-    let secondUrl = `https://pokeapi.co/api/v2/pokemon/${names[1]}`;
-    let secondPokemon = await (await fetch(secondUrl)).json();
-    if (names.length > 2) {
-        let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
-        let thirdPokemon = await (await fetch(thirdUrl)).json();
-        renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
-    }
-    else {
-        showMessage();
-    }
-}
-
-function getNames() {
-    let names = [];
-    let firstName = currentEvolutions['chain']['species']['name'];
-    let secondName = currentEvolutions['chain']['evolves_to']['0']['species']['name'];
-    let thirdName;
-
-    try {
-        thirdName = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
-        names.push(firstName, secondName, thirdName);
-    }
-    catch (e) {
-        try {
-            thirdName = currentEvolutions['chain']['evolves_to']['1']['species']['name'];
-            names.push(firstName, secondName, thirdName);
-        }
-        catch (e) {
-            names.push(firstName, secondName);
-        }
-    }
-
-    return names;
-}
-
-
-
+/**
+ * changes position of info-table
+ */
 function changeInfo(position) {
     slideBar(position);
 
@@ -348,6 +409,9 @@ function changeInfo(position) {
 
 }
 
+/**
+ * slides bar to the right position
+ */
 function slideBar(position) {
 
     if (position === 1) {
@@ -365,6 +429,9 @@ function slideBar(position) {
     changeOpacity(position);
 }
 
+/**
+ * changes opacity of stats that are shown or not shown
+ */
 function changeOpacity(position) {
     let ids = ['1', '2', '3'];
     ids.forEach(id => {

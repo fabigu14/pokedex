@@ -92,8 +92,12 @@ let pokemonTypes = [
     }
 ];
 
+
+/**
+ * gets & fetches api url, calls render function
+ */
 async function loadPokemon() {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 25; i++) {
         id = i + 1;
         let url = `https://pokeapi.co/api/v2/pokemon/` + id;
         let response = await fetch(url);
@@ -104,6 +108,9 @@ async function loadPokemon() {
     }
 }
 
+/**
+ * sets BG-Color of pokemon div
+ */
 function setBgColor() {
     let pokemonType = currentPokemon['types']['0']['type']['name']
     pokemonTypes.forEach(info => {
@@ -113,6 +120,9 @@ function setBgColor() {
     });
 }
 
+/**
+ * loads a generated html element and renders further elements 
+ */
 function renderPokemon() {
     let pokeContent = document.getElementById('pokeContent');
     pokeContent.innerHTML += getHtml();
@@ -122,6 +132,10 @@ function renderPokemon() {
     renderId();
 }
 
+
+/**
+ * generates html for the pokemon div
+ */
 function getHtml() {
     let htmlContent = `<a href="http://fabian-gurth.developerakademie.com/pokedex/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
         <div class="headline">
@@ -138,17 +152,39 @@ function getHtml() {
     return htmlContent;
 }
 
+/**
+ * renders name of pokemon
+ */
 function renderName() {
     let name = currentPokemon['name'];
     document.getElementById(`pokemonName${id}`).innerHTML = name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+/**
+ * renders img of pokemon
+ */
 function renderImg() {
 
     let img = currentPokemon['sprites']['other']['dream_world']['front_default'];
     document.getElementById(`pokemonImg${id}`).src = img;
+    setImgSize();
 }
 
+/**
+ * sets a diffrent width on spezific imgs
+ */
+function setImgSize(){
+    if(id == 13 || id == 14){
+        document.getElementById(`pokemonImg${id}`).style.width = '55px';
+    }
+    else if(id == 11){
+        document.getElementById(`pokemonImg${id}`).style.marginTop = '10px';
+    }
+}
+
+/**
+ * renders type ofthe pokemon
+ */
 function renderType() {
     document.getElementById(`types${id}`).innerHTML = ``;
     let types = currentPokemon['types'];
@@ -159,12 +195,14 @@ function renderType() {
     });
 }
 
+/**
+ * renders id of pokemon
+ */
 function renderId() {
     let pokeId = currentPokemon['id'];
     pokeId = ('000' + pokeId).substr(-3);
     document.getElementById(`id${id}`).innerHTML = `#${pokeId}`;
 }
-
 
 
 
