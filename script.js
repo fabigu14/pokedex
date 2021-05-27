@@ -99,19 +99,20 @@ let pokemonTypes = [
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
-    loadPokemon(id);
+    loadPokemon(1);
 }
 
 /**
  * gets & fetches api url, sets currentPokemon, calls render function
  */
 async function loadPokemon(id) {
-    let url = 'https://pokeapi.co/api/v2/pokemon/'+ id;
+    let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
     console.log(url);
     let response = await fetch(url);
     currentPokemon = await response.json();
     currentSpecies = await (await fetch(currentPokemon['species']['url'])).json();
     currentEvolutions = await (await fetch(currentSpecies['evolution_chain']['url'])).json();
+    console.log(currentEvolutions);
     setBgColor();
     renderPokemonInfo();
 }
@@ -266,8 +267,9 @@ function renderGraphs(name, value) {
  * gets data for evolutions, calls render function or displays message
  */
 async function fetchEvolutionData() {
-    let pokemon = [];
+
     let names = getNames();
+    
     let firstUrl = `https://pokeapi.co/api/v2/pokemon/${names[0]}`;
     let firstPokemon = await (await fetch(firstUrl)).json();
     let secondUrl = `https://pokeapi.co/api/v2/pokemon/${names[1]}`;
@@ -275,10 +277,10 @@ async function fetchEvolutionData() {
     if (names.length > 2) {
         let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
         let thirdPokemon = await (await fetch(thirdUrl)).json();
-        renderEvolutions(firstPokemon, secondPokemon, thirdPokemon);
+        renderTwoEvolutions(firstPokemon, secondPokemon, thirdPokemon);
     }
     else {
-        showMessage();
+        renderOneEvolutions(firstPokemon, secondPokemon);
     }
 }
 
@@ -304,19 +306,24 @@ function getNames() {
             names.push(firstName, secondName);
         }
     }
-
+    
     return names;
+
 }
 
 /**
- * renders evolutions
+ * renders evolutions with three pokemon in chain
  */
-function renderEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
+function renderTwoEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
     let pokemon = [firstPokemon, secondPokemon, thirdPokemon];
-
+    
     for (let i = 0; i < pokemon.length; i++) {
         const currentPkm = pokemon[i];
         let name = currentPkm['name'];
+
+        /**
+    	* following code is checks if a pokemon has two diffrent first evolutions
+        */
         let secondName = pokemon[1]['name'];
         let firstName = pokemon[0]['name'];
         document.getElementById(`name${i}`).innerHTML = name.charAt(0).toUpperCase() + name.slice(1)
@@ -330,34 +337,53 @@ function renderEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
             document.getElementById(`secondPokemon`).src = pokemon[0]['sprites']['other']['dream_world']['front_default'];
         }
     }
-    renderLvl()
+    renderLvl(pokemon);
 }
 
-function showMessage() {
-    document.getElementById('evolutions').innerHTML = `Evolutions will be added soon`
+/**
+ * renders evolutions with two pokemon in chain
+ */
+function renderOneEvolutions(firstPokemon, secondPokemon) {
+    let pokemon = [firstPokemon, secondPokemon];
+    console.log('two pokemon');
+    for (let i = 0; i < pokemon.length; i++) {
+        const currentPkm = pokemon[i];
+        let name = currentPkm['name'];
+
+        document.getElementById(`name${i}`).innerHTML = name.charAt(0).toUpperCase() + name.slice(1)
+        document.getElementById(`pokemon${i}`).src = currentPkm['sprites']['other']['dream_world']['front_default'];
+    }
+    renderLvl(pokemon);
+    hideScndEvolution();
 }
+
+function hideScndEvolution(){
+    document.getElementById('secondEvolution').style.display ='none';
+}
+
+// function showMessage() {
+//     document.getElementById('evolutions').innerHTML = `Evolutions will be added soon`
+// }
 
 /**
  * checks for next evolution
  */
 function checkEvolution() {
-    let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
-    let secondMinLvl;
-    try {
-        secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
-        return true;
-    }
 
-    catch (e) {
+    let secondEvolution = currentEvolutions['chain']['evolves_to']['0']['evolves_to'];
+    if (secondEvolution.length == 0) {
         return false;
     }
-}
 
+    else {
+        return true;
+    }
+}
 /**
  * renders min level for evolution
  */
-function renderLvl() {
-    let evolutionLvl = getLvl();
+function renderLvl(pokemon) {
+    let evolutionLvl = getLvl(pokemon);
     for (let i = 0; i < evolutionLvl.length; i++) {
         const lvl = evolutionLvl[i];
         if (Number.isInteger(lvl)) {
@@ -372,19 +398,25 @@ function renderLvl() {
 /**
  * gets & returns min levels for evolution to happen
  */
-function getLvl() {
+function getLvl(pokemon) {
+    let pokemonInChain = pokemon;
     let evolutionLvl = [];
     let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
     let secondMinLvl;
-    try {
-        secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
+    if(pokemonInChain.length > 2){
+        try {
+            secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
+        }
+    
+        catch (e) {
+            secondMinLvl = currentEvolutions['chain']['evolves_to']['1']['evolution_details']['0']['item']['name'];
+        }
+        evolutionLvl.push(firstMinLvl, secondMinLvl);
     }
-
-    catch (e) {
-        secondMinLvl = currentEvolutions['chain']['evolves_to']['1']['evolution_details']['0']['item']['name'];
+    else{
+        evolutionLvl.push(firstMinLvl);
     }
-    evolutionLvl.push(firstMinLvl, secondMinLvl);
-
+    
     return evolutionLvl;
 }
 
