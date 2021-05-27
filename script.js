@@ -99,7 +99,7 @@ let pokemonTypes = [
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
-    loadPokemon(1);
+    loadPokemon(id);
 }
 
 /**
@@ -316,7 +316,7 @@ function getNames() {
  */
 function renderTwoEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
     let pokemon = [firstPokemon, secondPokemon, thirdPokemon];
-    
+
     for (let i = 0; i < pokemon.length; i++) {
         const currentPkm = pokemon[i];
         let name = currentPkm['name'];
