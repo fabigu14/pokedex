@@ -6,8 +6,8 @@ body{
     align-items: center;
     flex-direction: column;
     font-family: 'Roboto', sans-serif;
-    /* background: url('img/pokeball.png') no-repeat top right/cover; */
-    background: #80808040;
+    background: url('img/night-sky.jpg') no-repeat 20% ;
+    /* background: #80808040; */
     
 }
 
@@ -41,7 +41,7 @@ body{
 
 .nav-bar{
     padding: 30px 0 10px 20px;
-    width: 100%;
+    width: calc(100% - 20px);
 }
 .nav-bar img{
     opacity: 0.7;
@@ -79,7 +79,6 @@ body{
     z-index: 1;
     padding: 40px 30px 0;
     width: calc(100% - 60px);
-    overflow: hidden;
 }
 
 .info-nav{
@@ -106,14 +105,29 @@ body{
 }
 
 .info-container{
+    width: 390px;
+    margin-top: 30px;
+    height: 250px;
     display: flex;
     transition: 225ms ease-in-out;
+    position: relative;
+    overflow: hidden;
 }
 
 .info-table{
-    margin-top: 30px;
-    width: 390px;
-    margin-right: 30px;
+    position: absolute;
+    right: 0;
+    left: 0;
+}
+
+.show-info{
+    transform: translateY(0px);
+    transition: 300ms transform ease-in-out;
+}
+
+.hide-info{
+    transform: translateY(-400px);
+    transition: 300ms transform ease-in-out;
 }
 
 .scroll-div{
@@ -137,7 +151,7 @@ body{
 }
 
 .graph-div{
-    width: 240px;
+    width: 235px;
     background-color: #f5f5f5;
 }
 
@@ -195,4 +209,54 @@ body{
 .arrow{
     height: 50px;
     width: 70px;
+}
+
+@media(max-width: 500px){
+    #pokemon {
+        width: 350px;
+    }
+    .pokemon-info {
+        min-height: 360px;
+        width: 350px;
+    }
+
+    #pokemonImg {
+        width: 140px;
+        height: 140px;
+        margin-top: -130px;
+    }
+
+    .info-container {
+        width: 300px;
+    }
+
+    .graph-div{
+        width: 135px;
+    }
+    .slide-bar{
+       display: none;
+    }
+    .underline{
+      display: none; 
+    }
+}
+
+@media(max-width: 400px){
+    #pokemon {
+        width: 100%;
+    }
+    .pokemon-info {
+        min-height: 360px;
+        width: 100%;
+    }
+
+    #pokemonImg {
+        width: 140px;
+        height: 140px;
+        margin-top: -130px;
+    }
+
+    .info-container {
+        width: 100%;
+    }
 }

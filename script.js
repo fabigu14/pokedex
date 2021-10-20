@@ -1,6 +1,7 @@
 let currentPokemon;
 let currentEvolutions;
 let currentSpecies;
+let infoType = ['about', 'stats', 'evolutions'];
 let pokemonTypes = [
     {
         "type": "bug",
@@ -106,7 +107,11 @@ function init() {
  * gets & fetches api url, sets currentPokemon, calls render function
  */
 async function loadPokemon(id) {
-    let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
+    // let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
+    /**
+ * gets & fetches api url, sets currentPokemon, calls render function
+ */
+    let url = 'https://pokeapi.co/api/v2/pokemon/21';
     console.log(url);
     let response = await fetch(url);
     currentPokemon = await response.json();
@@ -361,10 +366,6 @@ function hideScndEvolution(){
     document.getElementById('secondEvolution').style.display ='none';
 }
 
-// function showMessage() {
-//     document.getElementById('evolutions').innerHTML = `Evolutions will be added soon`
-// }
-
 /**
  * checks for next evolution
  */
@@ -423,28 +424,30 @@ function getLvl(pokemon) {
 /**
  * changes position of info-table
  */
-function changeInfo(position) {
-    slideBar(position);
+function changeInfo(id, position) {
+    resolveSlideBar(position);
 
-    let container = document.getElementById('infoContainer');
-    if (position === 1) {
-        container.style.marginLeft = 0;
-    }
+    infoType.forEach(info => {
 
-    else if (position === 2) {
-        container.style.marginLeft = '-420px';
-    }
+        if (id == info) {
+            
+            document.getElementById(info).classList.remove('hide-info');
+            document.getElementById(info).classList.add('show-info');  
+        }
 
-    else if (position === 3) {
-        container.style.marginLeft = '-840px';
-    }
-
+        else if (id !== info) {
+            
+            document.getElementById(info).classList.remove('show-info');
+            document.getElementById(info).classList.add('hide-info');
+        }
+        
+    });
 }
 
 /**
  * slides bar to the right position
  */
-function slideBar(position) {
+function resolveSlideBar(position) {
 
     if (position === 1) {
         document.getElementById('slideBar').style.marginLeft = '0';

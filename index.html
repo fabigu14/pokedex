@@ -32,9 +32,9 @@
         <img id="pokemonImg" src="" alt="img of pokemon">
         <div class="info-overlay">
             <nav class="info-nav">
-                <span onclick="changeInfo(1)" id="1" class="bold">About</span>
-                <span onclick="changeInfo(2)" id="2" class="opacity">Base Stats</span>
-                <span onclick="changeInfo(3)" id="3" class="opacity">Evolution</span>
+                <span onclick="changeInfo('about', 1)" id="1" class="bold">About</span>
+                <span onclick="changeInfo('stats', 2)" id="2" class="opacity">Base Stats</span>
+                <span onclick="changeInfo('evolutions', 3)" id="3" class="opacity">Evolution</span>
             </nav>
             <div class="slide-bar">
                 <div id="slideBar" class="underline" style="margin-left: 0%; width: 50px;"></div>
@@ -42,7 +42,7 @@
 
             <div id="infoContainer" class="info-container">
 
-                <table class="info-table">
+                <table id="about" class="info-table show-info">
                     <tr>
                         <td class="opacity">Species</td>
                         <td id="species"></td>
@@ -61,7 +61,7 @@
                     </tr>
                 </table>
 
-                <table class="info-table">
+                <table id="stats" class="info-table hide-info">
                     <tr>
                         <td class="stat opacity">HP</td>
                         <td id="hp" class="value"></td>
@@ -130,7 +130,7 @@
                     </tr>
                 </table>
 
-                <div id="evolutions" class="info-table">
+                <div id="evolutions" class="info-table hide-info">
 
                     <!-- first evolution -->
                     <div class="evolution">
