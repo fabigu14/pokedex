@@ -93,6 +93,19 @@ h2 {
     margin-top: -15px;
 }
 
+.imprint{
+    color: #ffffffc9;
+    text-decoration: none;
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+}
+
+.imprint:hover{
+    color: white;
+    text-decoration: underline;
+}
+
 @media(max-width: 800px) {
 
     body{
