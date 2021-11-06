@@ -107,11 +107,16 @@ function init() {
  * gets & fetches api url, sets currentPokemon, calls render function
  */
 async function loadPokemon(id) {
-    // let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
+    let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
     /**
  * gets & fetches api url, sets currentPokemon, calls render function
  */
-    let url = 'https://pokeapi.co/api/v2/pokemon/21';
+
+    /**
+     * this line is  for testing
+     * let url = 'https://pokeapi.co/api/v2/pokemon/21';
+    */
+
     console.log(url);
     let response = await fetch(url);
     currentPokemon = await response.json();
@@ -139,7 +144,7 @@ function renderPokemonInfo() {
  */
 function loadArrow() {
     document.getElementById('navBar').innerHTML = `
-            <a href="http://fabian-gurth.developerakademie.com/pokedex/pokedex.html#id${currentPokemon['id']}">
+            <a href="http://fabiangurth.de/pokedex/pokedex.html">
                 <img src="img/arrow-left.ico" alt="arrow-left">
             </a>`
 }

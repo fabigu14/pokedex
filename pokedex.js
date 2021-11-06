@@ -137,7 +137,7 @@ function renderPokemon() {
  * generates html for the pokemon div
  */
 function getHtml() {
-    let htmlContent = `<a href="http://fabian-gurth.developerakademie.com/pokedex/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
+    let htmlContent = `<a href="http://fabiangurth.de/pokedex/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
         <div class="headline">
             <h2 id="pokemonName${id}"></h2>
             <div class="id" id="id${id}"></div>
