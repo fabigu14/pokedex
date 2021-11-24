@@ -2,8 +2,7 @@ let currentPokemon;
 let currentEvolutions;
 let currentSpecies;
 let infoType = ['about', 'stats', 'evolutions'];
-let pokemonTypes = [
-    {
+let pokemonTypes = [{
         "type": "bug",
         "color": "#94BC4A"
     },
@@ -109,13 +108,13 @@ function init() {
 async function loadPokemon(id) {
     let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
     /**
- * gets & fetches api url, sets currentPokemon, calls render function
- */
+     * gets & fetches api url, sets currentPokemon, calls render function
+     */
 
     /**
      * this line is  for testing
      * let url = 'https://pokeapi.co/api/v2/pokemon/21';
-    */
+     */
 
     console.log(url);
     let response = await fetch(url);
@@ -144,7 +143,7 @@ function renderPokemonInfo() {
  */
 function loadArrow() {
     document.getElementById('navBar').innerHTML = `
-            <a href="http://fabiangurth.de/pokedex/pokedex.html">
+            <a href="https://pokédex.fabiangurth.de/pokedex.html">
                 <img src="img/arrow-left.ico" alt="arrow-left">
             </a>`
 }
@@ -262,12 +261,10 @@ function renderGraphs(name, value) {
 
         element.style.width = `100%`;
         element.style.backgroundColor = '#50cb50';
-    }
-    else if (value > 50 && value < 100) {
+    } else if (value > 50 && value < 100) {
         element.style.width = `${value}%`;
         element.style.backgroundColor = '#50cb50';
-    }
-    else {
+    } else {
         element.style.width = `${value}%`;
         element.style.backgroundColor = '#fa5e52';
     }
@@ -279,7 +276,7 @@ function renderGraphs(name, value) {
 async function fetchEvolutionData() {
 
     let names = getNames();
-    
+
     let firstUrl = `https://pokeapi.co/api/v2/pokemon/${names[0]}`;
     let firstPokemon = await (await fetch(firstUrl)).json();
     let secondUrl = `https://pokeapi.co/api/v2/pokemon/${names[1]}`;
@@ -288,8 +285,7 @@ async function fetchEvolutionData() {
         let thirdUrl = `https://pokeapi.co/api/v2/pokemon/${names[2]}`;
         let thirdPokemon = await (await fetch(thirdUrl)).json();
         renderTwoEvolutions(firstPokemon, secondPokemon, thirdPokemon);
-    }
-    else {
+    } else {
         renderOneEvolutions(firstPokemon, secondPokemon);
     }
 }
@@ -306,17 +302,15 @@ function getNames() {
     try {
         thirdName = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
         names.push(firstName, secondName, thirdName);
-    }
-    catch (e) {
+    } catch (e) {
         try {
             thirdName = currentEvolutions['chain']['evolves_to']['1']['species']['name'];
             names.push(firstName, secondName, thirdName);
-        }
-        catch (e) {
+        } catch (e) {
             names.push(firstName, secondName);
         }
     }
-    
+
     return names;
 
 }
@@ -332,8 +326,8 @@ function renderTwoEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
         let name = currentPkm['name'];
 
         /**
-    	* following code is checks if a pokemon has two diffrent first evolutions
-        */
+         * following code is checks if a pokemon has two diffrent first evolutions
+         */
         let secondName = pokemon[1]['name'];
         let firstName = pokemon[0]['name'];
         document.getElementById(`name${i}`).innerHTML = name.charAt(0).toUpperCase() + name.slice(1)
@@ -341,8 +335,7 @@ function renderTwoEvolutions(firstPokemon, secondPokemon, thirdPokemon) {
         if (checkEvolution()) {
             document.getElementById('secondName').innerHTML = secondName.charAt(0).toUpperCase() + secondName.slice(1);
             document.getElementById(`secondPokemon`).src = pokemon[1]['sprites']['other']['dream_world']['front_default'];
-        }
-        else {
+        } else {
             document.getElementById('secondName').innerHTML = firstName.charAt(0).toUpperCase() + firstName.slice(1);
             document.getElementById(`secondPokemon`).src = pokemon[0]['sprites']['other']['dream_world']['front_default'];
         }
@@ -367,8 +360,8 @@ function renderOneEvolutions(firstPokemon, secondPokemon) {
     hideScndEvolution();
 }
 
-function hideScndEvolution(){
-    document.getElementById('secondEvolution').style.display ='none';
+function hideScndEvolution() {
+    document.getElementById('secondEvolution').style.display = 'none';
 }
 
 /**
@@ -379,9 +372,7 @@ function checkEvolution() {
     let secondEvolution = currentEvolutions['chain']['evolves_to']['0']['evolves_to'];
     if (secondEvolution.length == 0) {
         return false;
-    }
-
-    else {
+    } else {
         return true;
     }
 }
@@ -394,8 +385,7 @@ function renderLvl(pokemon) {
         const lvl = evolutionLvl[i];
         if (Number.isInteger(lvl)) {
             document.getElementById(`level${i}`).innerHTML = `Lvl ${lvl}`;
-        }
-        else {
+        } else {
             document.getElementById(`level${i}`).innerHTML = lvl;
         }
     }
@@ -409,20 +399,17 @@ function getLvl(pokemon) {
     let evolutionLvl = [];
     let firstMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolution_details']['0']['min_level'];
     let secondMinLvl;
-    if(pokemonInChain.length > 2){
+    if (pokemonInChain.length > 2) {
         try {
             secondMinLvl = currentEvolutions['chain']['evolves_to']['0']['evolves_to']['0']['evolution_details']['0']['min_level'];
-        }
-    
-        catch (e) {
+        } catch (e) {
             secondMinLvl = currentEvolutions['chain']['evolves_to']['1']['evolution_details']['0']['item']['name'];
         }
         evolutionLvl.push(firstMinLvl, secondMinLvl);
-    }
-    else{
+    } else {
         evolutionLvl.push(firstMinLvl);
     }
-    
+
     return evolutionLvl;
 }
 
@@ -435,17 +422,15 @@ function changeInfo(id, position) {
     infoType.forEach(info => {
 
         if (id == info) {
-            
-            document.getElementById(info).classList.remove('hide-info');
-            document.getElementById(info).classList.add('show-info');  
-        }
 
-        else if (id !== info) {
-            
+            document.getElementById(info).classList.remove('hide-info');
+            document.getElementById(info).classList.add('show-info');
+        } else if (id !== info) {
+
             document.getElementById(info).classList.remove('show-info');
             document.getElementById(info).classList.add('hide-info');
         }
-        
+
     });
 }
 

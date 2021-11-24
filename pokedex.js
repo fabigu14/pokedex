@@ -1,7 +1,6 @@
 let currentPokemon;
 let id;
-let pokemonTypes = [
-    {
+let pokemonTypes = [{
         "type": "bug",
         "color": "#94BC4A"
     },
@@ -137,7 +136,7 @@ function renderPokemon() {
  * generates html for the pokemon div
  */
 function getHtml() {
-    let htmlContent = `<a href="http://fabiangurth.de/pokedex/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
+    let htmlContent = `<a href="http://pokédex.fabiangurth.de/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
         <div class="headline">
             <h2 id="pokemonName${id}"></h2>
             <div class="id" id="id${id}"></div>
@@ -173,11 +172,10 @@ function renderImg() {
 /**
  * sets a diffrent width on spezific imgs
  */
-function setImgSize(){
-    if(id == 13 || id == 14){
+function setImgSize() {
+    if (id == 13 || id == 14) {
         document.getElementById(`pokemonImg${id}`).style.width = '55px';
-    }
-    else if(id == 11){
+    } else if (id == 11) {
         document.getElementById(`pokemonImg${id}`).style.marginTop = '10px';
     }
 }
@@ -203,8 +201,3 @@ function renderId() {
     pokeId = ('000' + pokeId).substr(-3);
     document.getElementById(`id${id}`).innerHTML = `#${pokeId}`;
 }
-
-
-
-
-
