@@ -1,6 +1,7 @@
 let currentPokemon;
 let currentEvolutions;
 let currentSpecies;
+let id;
 let infoType = ['about', 'stats', 'evolutions'];
 let pokemonTypes = [{
         "type": "bug",
@@ -98,14 +99,14 @@ let pokemonTypes = [{
  */
 function init() {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    loadPokemon(id);
+    id = urlParams.get('id');
+    loadPokemon();
 }
 
 /**
  * gets & fetches api url, sets currentPokemon, calls render function
  */
-async function loadPokemon(id) {
+async function loadPokemon() {
     let url = 'https://pokeapi.co/api/v2/pokemon/' + id;
     /**
      * gets & fetches api url, sets currentPokemon, calls render function
@@ -183,7 +184,8 @@ function renderName() {
  */
 function renderImg() {
 
-    let img = currentPokemon['sprites']['other']['dream_world']['front_default'];
+    // let img = currentPokemon['sprites']['other']['dream_world']['front_default'];
+    let img = localStorage.getItem(id);
     document.getElementById('pokemonImg').src = img;
 }
 
@@ -204,9 +206,9 @@ function renderType() {
  * renders id of pokemon
  */
 function renderId() {
-    let id = currentPokemon['id'];
-    id = ('000' + id).substr(-3);
-    document.getElementById('id').innerHTML = `#${id}`;
+    let index = currentPokemon['id'];
+    index = ('000' + id).substr(-3);
+    document.getElementById('id').innerHTML = `#${index}`;
 }
 
 /**
@@ -223,7 +225,7 @@ async function renderAbout() {
 /**
  * gets & fetches api url of currentSpecies, returns currentspecies as Json
  */
-async function getSpeciesData(id) {
+async function getSpeciesData() {
     let urlSpecies = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
     let responseSpecies = await fetch(urlSpecies);
     let speciesAsJson = await responseSpecies.json();

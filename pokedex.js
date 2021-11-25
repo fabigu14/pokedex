@@ -136,7 +136,7 @@ function renderPokemon() {
  * generates html for the pokemon div
  */
 function getHtml() {
-    let htmlContent = `<a href="http://pokédex.fabiangurth.de/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
+    let htmlContent = `<a href="https://pokédex.fabiangurth.de/index.html?id=${id}"><div class="pokemon" id="pokemon${id}">
         <div class="headline">
             <h2 id="pokemonName${id}"></h2>
             <div class="id" id="id${id}"></div>
@@ -166,6 +166,7 @@ function renderImg() {
 
     let img = currentPokemon['sprites']['other']['dream_world']['front_default'];
     document.getElementById(`pokemonImg${id}`).src = img;
+    localStorage.setItem(id, img);
     setImgSize();
 }
 
